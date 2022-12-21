@@ -7,7 +7,7 @@ from .models import *
 @admin.register(Tag)
 class TagAdmin(admin.ModelAdmin):
     def course_count(self, obj):
-        return obj.course_set.all().count()
+        return obj.plan_set.all().count()
 
     course_count.short_description = 'number of courses'
     list_display = ('title', 'course_count')
@@ -34,35 +34,23 @@ class PlanAdmin(admin.ModelAdmin):
 
 @admin.register(Task)
 class TaskAdmin(admin.ModelAdmin):
-    def get_plan(self, obj):
-        return obj.plan.title
-
-    get_plan.short_description = 'plan_title'
-    list_display = ('title', 'description', 'created_at', 'updated_at', 'deadline', 'plan', 'get_plan')
+    list_display = ('title', 'description', 'created_at', 'updated_at', 'deadline', 'plan')
     list_per_page = 10
     ordering = ('-created_at',)
-    search_fields = ('title', 'description', 'created_at', 'updated_at', 'deadline', 'plan', 'get_plan')
+    search_fields = ('title', 'description', 'created_at', 'updated_at', 'deadline', 'plan')
 
 
 @admin.register(Member)
 class MemberAdmin(admin.ModelAdmin):
-    def get_plan(self, obj):
-        return obj.plan.title
-
-    get_plan.short_description = 'plan_title'
-    list_display = ('first_name', 'last_name', 'phone', 'birth_date', 'join_date', 'user', 'plan', 'get_plan')
+    list_display = ('first_name', 'last_name', 'phone', 'birth_date', 'join_date', 'user', 'plan')
     list_per_page = 10
     ordering = ('user',)
-    search_fields = ('first_name', 'last_name', 'phone', 'birth_date', 'join_date', 'user', 'plan', 'get_plan')
+    search_fields = ('first_name', 'last_name', 'phone', 'birth_date', 'join_date', 'user', 'plan')
 
 
 @admin.register(Mentor)
 class MentorAdmin(admin.ModelAdmin):
-    def get_plan(self, obj):
-        return obj.plan.title
-
-    get_plan.short_description = 'plan_title'
-    list_display = ('first_name', 'last_name', 'phone', 'birth_date', 'user', 'plan', 'get_plan')
+    list_display = ('first_name', 'last_name', 'phone', 'birth_date', 'user', 'plan')
     list_per_page = 10
     ordering = ('user',)
-    search_fields = ('first_name', 'last_name', 'phone', 'birth_date', 'user', 'plan', 'get_plan')
+    search_fields = ('first_name', 'last_name', 'phone', 'birth_date', 'user', 'plan')
