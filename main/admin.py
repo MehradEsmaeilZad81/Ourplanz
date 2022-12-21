@@ -10,10 +10,10 @@ class TagAdmin(admin.ModelAdmin):
         return obj.course_set.all().count()
 
     course_count.short_description = 'number of courses'
-    list_display = ('title', 'number of courses')
+    list_display = ('title', 'course_count')
     list_per_page = 10
     ordering = ('title',)
-    search_fields = ('title', 'number of courses')
+    search_fields = ('title', 'course_count')
 
 
 @admin.register(Plan)
@@ -26,10 +26,10 @@ class PlanAdmin(admin.ModelAdmin):
 
     get_tags.short_description = 'tags'
     get_capacity.short_description = 'capacity'
-    list_display = ('title', 'tags', 'description', 'created_at', 'updated_at', 'limit', 'capacity')
+    list_display = ('title', 'get_tags', 'description', 'created_at', 'updated_at', 'limit', 'get_capacity')
     list_per_page = 10
     ordering = ('-created_at',)
-    search_fields = ('title', 'tags', 'description', 'created_at', 'updated_at', 'limit', 'capacity')
+    search_fields = ('title', 'get_tags', 'description', 'created_at', 'updated_at', 'limit', 'get_capacity')
 
 
 @admin.register(Task)
@@ -38,22 +38,10 @@ class TaskAdmin(admin.ModelAdmin):
         return obj.plan.title
 
     get_plan.short_description = 'plan_title'
-    list_display = ('title', 'description', 'created_at', 'updated_at', 'deadline', 'plan', 'plan_title')
+    list_display = ('title', 'description', 'created_at', 'updated_at', 'deadline', 'plan', 'get_plan')
     list_per_page = 10
     ordering = ('-created_at',)
-    search_fields = ('title', 'description', 'created_at', 'updated_at', 'deadline', 'plan', 'plan_title')
-
-
-@admin.register(Mentor)
-class MentorAdmin(admin.ModelAdmin):
-    def get_plan(self, obj):
-        return obj.plan.title
-
-    get_plan.short_description = 'plan_title'
-    list_display = ('first_name', 'last_name', 'phone', 'birth_date', 'join_date', 'user', 'plan', 'plan_title')
-    list_per_page = 10
-    ordering = ('user',)
-    search_fields = ('first_name', 'last_name', 'phone', 'birth_date', 'join_date', 'user', 'plan', 'plan_title')
+    search_fields = ('title', 'description', 'created_at', 'updated_at', 'deadline', 'plan', 'get_plan')
 
 
 @admin.register(Member)
@@ -62,7 +50,19 @@ class MemberAdmin(admin.ModelAdmin):
         return obj.plan.title
 
     get_plan.short_description = 'plan_title'
-    list_display = ('first_name', 'last_name', 'phone', 'birth_date', 'join_date', 'user', 'plan', 'plan_title')
+    list_display = ('first_name', 'last_name', 'phone', 'birth_date', 'join_date', 'user', 'plan', 'get_plan')
     list_per_page = 10
     ordering = ('user',)
-    search_fields = ('first_name', 'last_name', 'phone', 'birth_date', 'join_date', 'user', 'plan', 'plan_title')
+    search_fields = ('first_name', 'last_name', 'phone', 'birth_date', 'join_date', 'user', 'plan', 'get_plan')
+
+
+@admin.register(Mentor)
+class MentorAdmin(admin.ModelAdmin):
+    def get_plan(self, obj):
+        return obj.plan.title
+
+    get_plan.short_description = 'plan_title'
+    list_display = ('first_name', 'last_name', 'phone', 'birth_date', 'user', 'plan', 'get_plan')
+    list_per_page = 10
+    ordering = ('user',)
+    search_fields = ('first_name', 'last_name', 'phone', 'birth_date', 'user', 'plan', 'get_plan')
