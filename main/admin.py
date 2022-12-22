@@ -26,31 +26,45 @@ class PlanAdmin(admin.ModelAdmin):
 
     get_tags.short_description = 'tags'
     get_capacity.short_description = 'capacity'
-    list_display = ('title', 'get_tags', 'description', 'created_at', 'updated_at', 'limit', 'get_capacity')
+    list_display = (
+        'title', 'get_tags', 'description', 'created_at', 'updated_at', 'starts_at', 'limit', 'get_capacity')
     list_per_page = 10
     ordering = ('-created_at',)
-    search_fields = ('title', 'get_tags', 'description', 'created_at', 'updated_at', 'limit', 'get_capacity')
+    search_fields = (
+        'title', 'get_tags', 'description', 'created_at', 'updated_at', 'starts_at', 'limit', 'get_capacity')
 
 
 @admin.register(Task)
 class TaskAdmin(admin.ModelAdmin):
-    list_display = ('title', 'description', 'created_at', 'updated_at', 'deadline', 'plan')
+    def get_creator(self, obj):
+        return obj.plan.mentor
+
+    get_creator.short_description = 'creator'
+    list_display = ('title', 'description', 'created_at', 'updated_at', 'deadline', 'plan', 'get_creator')
     list_per_page = 10
     ordering = ('-created_at',)
-    search_fields = ('title', 'description', 'created_at', 'updated_at', 'deadline', 'plan')
+    search_fields = ('title', 'description', 'created_at', 'updated_at', 'deadline', 'plan', 'get_creator')
+
+
+@admin.register(Profile)
+class ProfileAdmin(admin.ModelAdmin):
+    list_display = ('first_name', 'last_name', 'phone', 'birth_date', 'join_date', 'user')
+    list_per_page = 10
+    ordering = ('user',)
+    search_fields = ('first_name', 'last_name', 'phone', 'birth_date', 'join_date', 'user')
 
 
 @admin.register(Member)
 class MemberAdmin(admin.ModelAdmin):
-    list_display = ('first_name', 'last_name', 'phone', 'birth_date', 'join_date', 'user', 'plan')
+    list_display = ('plan', 'profile')
     list_per_page = 10
-    ordering = ('user',)
-    search_fields = ('first_name', 'last_name', 'phone', 'birth_date', 'join_date', 'user', 'plan')
+    ordering = ('plan', 'profile')
+    search_fields = ('plan', 'profile')
 
 
 @admin.register(Mentor)
 class MentorAdmin(admin.ModelAdmin):
-    list_display = ('first_name', 'last_name', 'phone', 'birth_date', 'user', 'plan')
+    list_display = ('plan', 'profile')
     list_per_page = 10
-    ordering = ('user',)
-    search_fields = ('first_name', 'last_name', 'phone', 'birth_date', 'user', 'plan')
+    ordering = ('plan', 'profile')
+    search_fields = ('plan', 'profile')

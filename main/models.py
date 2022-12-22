@@ -20,6 +20,7 @@ class Plan(models.Model):
     description = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+    starts_at = models.DateTimeField(null=True)
     limit = models.IntegerField(default=10)
     tags = models.ManyToManyField(Tag)
 
@@ -45,14 +46,13 @@ class Task(models.Model):
         ordering = ['-created_at']
 
 
-class Member(models.Model):
+class Profile(models.Model):
     first_name = models.CharField(max_length=50)
     last_name = models.CharField(max_length=50)
     phone = models.CharField(max_length=14)  # Example : (98) 911 111 1111
     birth_date = models.DateField(null=True, blank=True)
     join_date = models.DateTimeField(auto_created=True)
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
-    plan = models.ForeignKey(Plan, on_delete=models.CASCADE)
+    user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
 
     def __str__(self):
         return self.first_name + ' ' + self.last_name
@@ -61,16 +61,17 @@ class Member(models.Model):
         ordering = ['user']
 
 
+class Member(models.Model):
+    profile = models.ForeignKey(Profile, on_delete=models.CASCADE)
+    plan = models.ForeignKey(Plan, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return self.profile.first_name + ' ' + self.profile.last_name
+
+
 class Mentor(models.Model):
-    first_name = models.CharField(max_length=50)
-    last_name = models.CharField(max_length=50)
-    phone = models.CharField(max_length=14)  # Example : (98) 911 111 1111
-    birth_date = models.DateField(null=True, blank=True)
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    profile = models.ForeignKey(Profile, on_delete=models.CASCADE)
     plan = models.OneToOneField(Plan, on_delete=models.CASCADE)
 
     def __str__(self):
-        return self.first_name + ' ' + self.last_name
-
-    class Meta:
-        ordering = ['first_name', 'last_name']
+        return self.profile.first_name + ' ' + self.profile.last_name
