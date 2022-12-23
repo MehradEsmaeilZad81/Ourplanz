@@ -6,5 +6,6 @@ from . import views
 # router.register('plans/', views.PlanList.as_view())
 
 urlpatterns = [
-    path('plans/', views.PlanList.as_view())
+    path('plans/', views.PlanList.as_view()),
+    path('plans/<int:id>/', views.PlanDetail.as_view())
 ]

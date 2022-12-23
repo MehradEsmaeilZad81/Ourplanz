@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from rest_framework import generics
 from rest_framework import status
 from rest_framework.views import APIView
@@ -24,3 +24,25 @@ class PlanList(APIView):
         serializer.is_valid(raise_exception=True)
         serializer.save()
         return Response(serializer.data, status=status.HTTP_201_CREATED)
+
+
+class PlanDetail(APIView):
+    def get(self, request, id):
+        plan = get_object_or_404(Plan, pk=id)
+        serializer = PlanSerializer(plan)
+        return Response(serializer.data)
+
+    def put(self, request, id):
+        plan = get_object_or_404(Plan, pk=id)
+        serializer = PlanSerializer(plan, data=request.data)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        return Response(serializer.data)
+
+    def delete(self, request, id):
+        plan = get_object_or_404(Plan, pk=id)
+        if product.members.count() > 0:
+            return Response({'detail': 'Cannot delete plan with active members'},
+                            status=status.HTTP_405_METHOD_NOT_ALLOWED)
+        plan.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
