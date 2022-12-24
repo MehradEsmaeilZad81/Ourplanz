@@ -5,15 +5,46 @@ from .models import *
 class PlanSerializer(serializers.ModelSerializer):
     class Meta:
         model = Plan
-        fields = ['title', 'description', 'created_at', 'updated_at', 'starts_at', 'limit', 'tags', 'mentor']
+        fields = ['title', 'created_at', 'starts_at', 'mentor', 'limit', 'capacity', 'tags', 'plan_detail']
 
     tags = serializers.SerializerMethodField(method_name='get_tags')
+    capacity = serializers.SerializerMethodField(method_name='get_capacity')
+    mentor = serializers.SerializerMethodField(method_name='mentor_name')
 
     def get_tags(self, plan: Plan):
         tags = []
         for t in plan.tags.all():
             tags.append(t.title)
         return tags
+
+    def get_capacity(self, plan: Plan):
+        return plan.limit - plan.member_set.all().count()
+
+    def mentor_name(self, plan: Plan):
+        return plan.mentor.profile.first_name + ' ' + plan.mentor.profile.last_name
+
+
+class PlanDetailSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Plan
+        fields = ['title', 'description', 'created_at', 'updated_at', 'starts_at', 'mentor', 'limit', 'capacity',
+                  'tags']
+
+    tags = serializers.SerializerMethodField(method_name='get_tags')
+    capacity = serializers.SerializerMethodField(method_name='get_capacity')
+    mentor = serializers.SerializerMethodField(method_name='mentor_name')
+
+    def get_tags(self, plan: Plan):
+        tags = []
+        for t in plan.tags.all():
+            tags.append(t.title)
+        return tags
+
+    def get_capacity(self, plan: Plan):
+        return plan.limit - plan.member_set.all().count()
+
+    def mentor_name(self, plan: Plan):
+        return plan.mentor.profile.first_name + ' ' + plan.mentor.profile.last_name
 
 
 class TagSerializer(serializers.ModelSerializer):

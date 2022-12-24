@@ -29,12 +29,12 @@ class PlanList(APIView):
 class PlanDetail(APIView):
     def get(self, request, id):
         plan = get_object_or_404(Plan, pk=id)
-        serializer = PlanSerializer(plan)
+        serializer = PlanDetailSerializer(plan)
         return Response(serializer.data)
 
     def put(self, request, id):
         plan = get_object_or_404(Plan, pk=id)
-        serializer = PlanSerializer(plan, data=request.data)
+        serializer = PlanDetailSerializer(plan, data=request.data)
         serializer.is_valid(raise_exception=True)
         serializer.save()
         return Response(serializer.data)
