@@ -64,7 +64,7 @@ class Profile(models.Model):
 
 class Member(models.Model):
     profile = models.ForeignKey(Profile, on_delete=models.CASCADE)
-    plan = models.ForeignKey(Plan, on_delete=models.PROTECT, related_name='members')
+    plan = models.ForeignKey(Plan, on_delete=models.PROTECT)
 
     def __str__(self):
         return self.profile.first_name + ' ' + self.profile.last_name
