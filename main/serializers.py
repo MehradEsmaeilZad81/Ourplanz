@@ -5,11 +5,16 @@ from .models import *
 class PlanSerializer(serializers.ModelSerializer):
     class Meta:
         model = Plan
-        fields = ['title', 'created_at', 'starts_at', 'mentor', 'limit', 'capacity', 'tags', 'plan_detail']
+        fields = ['title', 'created_at', 'starts_at', 'mentor', 'limit', 'capacity', 'tags', 'detail_url']
 
     tags = serializers.SerializerMethodField(method_name='get_tags')
     capacity = serializers.SerializerMethodField(method_name='get_capacity')
     mentor = serializers.SerializerMethodField(method_name='mentor_name')
+    detail_url = serializers.SerializerMethodField(method_name='get_detail_url')
+
+    def get_detail_url(self, plan: Plan):
+        Base_url = 'http://localhost:8000'
+        return "{}/app/plans/{}/".format(Base_url, plan.id)
 
     def get_tags(self, plan: Plan):
         tags = []
