@@ -13,7 +13,7 @@ class PlanSerializer(serializers.ModelSerializer):
     detail_url = serializers.SerializerMethodField(method_name='get_detail_url')
 
     def get_detail_url(self, plan: Plan):
-        Base_url = 'http://localhost:8000'
+        Base_url = 'http://127.0.0.1:8000'
         return "{}/app/plans/{}/".format(Base_url, plan.id)
 
     def get_tags(self, plan: Plan):
