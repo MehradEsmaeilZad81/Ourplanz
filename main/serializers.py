@@ -1,4 +1,5 @@
 from rest_framework import serializers
+
 from .models import *
 
 
@@ -53,6 +54,22 @@ class PlanDetailSerializer(serializers.ModelSerializer):
 
 
 class TagSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Tag
+        fields = ['title', 'plans_count', 'detail_url']
+
+    plans_count = serializers.SerializerMethodField(method_name='get_plans_count')
+    detail_url = serializers.SerializerMethodField(method_name='get_detail_url')
+
+    def get_detail_url(self, tag: Tag):
+        Base_url = 'http://127.0.0.1:8000'
+        return "{}/app/tags/{}/".format(Base_url, tag.id)
+
+    def get_plans_count(self, tag: Tag):
+        return tag.plan_set.all().count()
+
+
+class TagDetailSerializer(serializers.ModelSerializer):
     class Meta:
         model = Tag
         fields = ['title', 'plans_count', 'plans']

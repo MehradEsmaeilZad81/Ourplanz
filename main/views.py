@@ -66,12 +66,12 @@ class TagList(APIView):
 class TagDetail(APIView):
     def get(self, request, id):
         tag = get_object_or_404(Tag, pk=id)
-        serializer = TagSerializer(Tag)
+        serializer = TagDetailSerializer(Tag)
         return Response(serializer.data)
 
     def put(self, request, id):
         tag = get_object_or_404(Tag, pk=id)
-        serializer = TagSerializer(Tag, data=request.data)
+        serializer = TagDetailSerializer(Tag, data=request.data)
         serializer.is_valid(raise_exception=True)
         serializer.save()
         return Response(serializer.data)
