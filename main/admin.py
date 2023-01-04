@@ -27,11 +27,11 @@ class PlanAdmin(admin.ModelAdmin):
     get_tags.short_description = 'tags'
     get_capacity.short_description = 'capacity'
     list_display = (
-        'title', 'get_tags', 'description', 'created_at', 'updated_at', 'starts_at', 'limit', 'get_capacity')
+        'title', 'get_tags', 'created_at', 'updated_at', 'starts_at', 'limit', 'get_capacity', 'mentor')
     list_per_page = 10
-    ordering = ('-created_at',)
+    ordering = ('-created_at', 'title')
     search_fields = (
-        'title', 'get_tags', 'description', 'created_at', 'updated_at', 'starts_at', 'limit', 'get_capacity')
+        'title', 'get_tags', 'description', 'created_at', 'updated_at', 'starts_at', 'limit', 'get_capacity', 'mentor')
 
 
 @admin.register(Task)
@@ -56,15 +56,15 @@ class ProfileAdmin(admin.ModelAdmin):
 
 @admin.register(Member)
 class MemberAdmin(admin.ModelAdmin):
-    list_display = ('plan', 'profile')
+    list_display = ('profile',)
     list_per_page = 10
-    ordering = ('plan', 'profile')
-    search_fields = ('plan', 'profile')
+    ordering = ('profile',)
+    search_fields = ('profile',)
 
-
-@admin.register(Mentor)
-class MentorAdmin(admin.ModelAdmin):
-    list_display = ('plan', 'profile')
-    list_per_page = 10
-    ordering = ('plan', 'profile')
-    search_fields = ('plan', 'profile')
+#
+# @admin.register(Mentor)
+# class MentorAdmin(admin.ModelAdmin):
+#     list_display = ('plan', 'profile')
+#     list_per_page = 10
+#     ordering = ('plan', 'profile')
+#     search_fields = ('plan', 'profile')

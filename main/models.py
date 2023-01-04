@@ -23,7 +23,10 @@ class Plan(models.Model):
     starts_at = models.DateTimeField(null=True)
     limit = models.IntegerField(default=10)
     tags = models.ManyToManyField(Tag)
-    mentor = models.OneToOneField('Mentor', on_delete=models.CASCADE)
+    mentor = models.ForeignKey('Profile', on_delete=models.CASCADE, related_name='mentor')
+
+    # members = models.ManyToManyField('Profile', null=True, blank=True, related_name='members')
+    # mentor = models.OneToOneField('Mentor', on_delete=models.CASCADE)
 
     def __str__(self):
         return self.title
@@ -63,15 +66,14 @@ class Profile(models.Model):
 
 
 class Member(models.Model):
-    profile = models.ForeignKey(Profile, on_delete=models.CASCADE)
-    plan = models.ForeignKey(Plan, on_delete=models.PROTECT)
+    profile = models.OneToOneField(Profile, on_delete=models.CASCADE)
+    plan = models.ManyToManyField(Plan)
 
     def __str__(self):
         return self.profile.first_name + ' ' + self.profile.last_name
 
-
-class Mentor(models.Model):
-    profile = models.ForeignKey(Profile, on_delete=models.CASCADE)
-
-    def __str__(self):
-        return self.profile.first_name + ' ' + self.profile.last_name
+# class Mentor(models.Model):
+#     profile = models.ForeignKey(Profile, on_delete=models.CASCADE)
+#
+#     def __str__(self):
+#         return self.profile.first_name + ' ' + self.profile.last_name
